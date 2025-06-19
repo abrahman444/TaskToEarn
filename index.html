@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task To Earn </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dollar-logo {
+            width: 20px;
+            height: 20px;
+            color: var(--primary);
+            margin-right: 5px;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu ul {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .sidebar-menu a:hover {
+            background-color: rgba(74, 107, 255, 0.1);
+            color: var(--primary);
+        }
+        
+        .sidebar-menu a.active {
+            background-color: rgba(74, 107, 255, 0.2);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .sidebar-collapse {
+            width: 70px;
+        }
+        
+        .sidebar-collapse .sidebar-header h3,
+        .sidebar-collapse .menu-text {
+            display: none;
+        }
+        
+        .sidebar-collapse .sidebar-menu a {
+            justify-content: center;
+        }
+        
+        .sidebar-collapse .sidebar-menu i {
+            margin-right: 0;
+            font-size: 1.3rem;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--secondary);
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .header h2 {
+            color: var(--dark);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a5bef;
+        }
+        
+        .btn-outline-primary {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .btn-success:disabled {
+            background-color: #a3d0b2;
+            cursor: not-allowed;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-header h3 {
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .profile-info {
+            width: 100%;
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
+        }
+        
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: white;
+        }
+        
+        .task-info {
+            flex: 1;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .task-reward {
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+        
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .timer {
+            font-size: 0.8rem;
+            color: var(--danger);
+            margin-bottom: 5px;
+        }
+        
+        .screenshot-submit {
+            display: none;
+            margin-top: 5px;
+        }
+        
+        .wallet-balance {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .withdrawal-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .message-container {
+            height: 300px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            overflow-y: auto;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        
+        .received {
+            background-color: #f1f1f1;
+            align-self: flex-start;
+        }
+        
+        .sent {
+            background-color: var(--primary);
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .message-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message-input input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            line-height: 1.6;
+            font-size: 1rem;
+            width: auto;
+        }
+        
+        .message-input button {
+            padding: 6px 10px;
+            width: auto;
+        }
+        
+        .alert {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+        
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #856404;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .notification-badge {
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+        
+        .screenshot-preview {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .home-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        
+        .contact-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .contact-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .contact-option input[type="text"] {
+            flex: 1;
+            margin-left: 10px;
+        }
+        
+        .refresh-timer {
+            font-size: 0.9rem;
+            color: var(--warning);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .spin-wheel {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            position: relative;
+            transition: transform 0.1s;
+        }
+        
+        .spin-wheel.spinning {
+            animation: spin 3s linear forwards;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(1080deg); }
+        }
+        
+        .spin-segment {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #000;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        
+        .spin-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+        
+        .spin-timer {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+        
+        .coming-soon {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .sidebar-collapse {
+                width: 100%;
+            }
+            
+            .sidebar-collapse .sidebar-header h3,
+            .sidebar-collapse .menu-text {
+                display: block;
+            }
+            
+            .sidebar-collapse .sidebar-menu a {
+                justify-content: flex-start;
+            }
+            
+            .sidebar-collapse .sidebar-menu i {
+                margin-right: 10px;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .spin-wheel {
+                max-width: 200px;
+            }
+            
+            .spin-segment {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><span class="dollar-logo">💲</span> Task To Earn</h3>
+                <i class="fas fa-bars" id="sidebarToggle"></i>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="#" id="homeLink">
+                            <i class="fas fa-home"></i>
+                            <span class="menu-text">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="profileLink">
+                            <i class="fas fa-user"></i>
+                            <span class="menu-text">Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="tasksLink">
+                            <i class="fas fa-tasks"></i>
+                            <span class="menu-text">Tasks</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="walletLink">
+                            <i class="fas fa-wallet"></i>
+                            <span class="menu-text">Wallet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="withdrawLink">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span class="menu-text">Withdraw</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="messagesLink">
+                            <i class="fas fa-envelope"></i>
+                            <span class="menu-text">Messages</span>
+                            <div class="notification-badge hidden" id="messageBadge">1</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="spinLink">
+                            <i class="fas fa-sync-alt"></i>
+                            <span class="menu-text">Daily Spin</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="postAddLink">
+                            <i class="fas fa-bullhorn"></i>
+                            <span class="menu-text">Post Your Add</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="shareAppLink">
+                            <i class="fas fa-share-alt"></i>
+                            <span class="menu-text">Share App</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h2 id="pageTitle">Home</h2>
+                <div class="user-info" id="userInfo">
+                    <span id="usernameDisplay"></span>
+                </div>
+            </div>
+            
+            <!-- Home Section -->
+            <div class="content-section" id="homeSection">
+                <div class="card">
+                    <h3>Welcome to TaskEarn!</h3>
+                    <p>Complete simple tasks and earn money directly to your wallet. Start by browsing available tasks in the Tasks section.</p>
+                    <div class="wallet-balance" id="homeWalletBalance">৳0.00</div>
+                    <button class="btn btn-primary" onclick="showSection('tasks')">Start Earning Now</button>
+                </div>
+                
+                <div class="card">
+                    <h3>How It Works</h3>
+                    <ol style="padding-left: 20px; margin-top: 10px;">
+                        <li>Go to the Tasks section</li>
+                        <li>Choose a task and click Start</li>
+                        <li>Complete the task requirements</li>
+                        <li>Get paid instantly to your wallet</li>
+                        <li>Withdraw your earnings anytime</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Profile Section -->
+            <div class="content-section hidden" id="profileSection">
+                <div class="card">
+                    <div class="profile-section">
+                        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                        <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic" id="profileImage">
+                        <div class="profile-info mt-4">
+                            <div id="profileInfoDisplay" class="hidden">
+                                <div class="form-group">
+                                    <label for="profileUsernameDisplay">Username</label>
+                                    <input type="text" id="profileUsernameDisplay" class="form-control" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileEmailDisplay">Email</label>
+                                    <input type="email" id="profileEmailDisplay" class="form-control" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Address</label>
+                                    <div id="profileContactDisplay"></div>
+                                </div>
+                                <button class="btn btn-danger mt-3" id="logoutBtn">Logout</button>
+                            </div>
+                            <div id="authSection">
+                                <div class="auth-buttons">
+                                    <button class="btn btn-primary" id="signUpBtn">Sign Up</button>
+                                    <button class="btn btn-outline-primary" id="loginBtn">Login</button>
+                                </div>
+                                <div id="authForm" class="hidden mt-3">
+                                    <!-- Sign Up Form -->
+                                    <div id="signUpForm" class="hidden">
+                                        <div class="form-group">
+                                            <label for="signUpUsername">Username</label>
+                                            <input type="text" id="signUpUsername" class="form-control" placeholder="Enter username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="signUpEmail">Email</label>
+                                            <input type="email" id="signUpEmail" class="form-control" placeholder="Enter email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="signUpPassword">Password (8-16 characters)</label>
+                                            <input type="password" id="signUpPassword" class="form-control" placeholder="Enter 8-16 character password">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Contact Address</label>
+                                            <div class="contact-option">
+                                                <input type="radio" id="contactFacebook" name="contactMethod" value="facebook">
+                                                <label for="contactFacebook"><i class="fab fa-facebook-f"></i> Facebook</label>
+                                                <input type="text" id="contactFacebookLink" class="form-control" placeholder="Enter Facebook link" style="display: none;">
+                                            </div>
+                                            <div class="contact-option">
+                                                <input type="radio" id="contactWhatsapp" name="contactMethod" value="whatsapp">
+                                                <label for="contactWhatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</label>
+                                                <input type="text" id="contactWhatsappNumber" class="form-control" placeholder="Enter WhatsApp number" style="display: none;">
+                                            </div>
+                                            <div class="contact-option">
+                                                <input type="radio" id="contactTelegram" name="contactMethod" value="telegram">
+                                                <label for="contactTelegram"><i class="fab fa-telegram-plane"></i> Telegram</label>
+                                                <input type="text" id="contactTelegramId" class="form-control" placeholder="Enter Telegram ID" style="display: none;">
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-block" id="submitSignUp">Sign Up</button>
+                                    </div>
+                                    <!-- Login Form -->
+                                    <div id="loginForm" class="hidden">
+                                        <div class="form-group">
+                                            <label for="loginEmail">Email</label>
+                                            <input type="email" id="loginEmail" class="form-control" placeholder="Enter email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="loginPassword">Password</label>
+                                            <input type="password" id="loginPassword" class="form-control" placeholder="Enter password">
+                                        </div>
+                                        <button class="btn btn-primary btn-block" id="submitLogin">Login</button>
+                                    </div>
+                                    <div id="authAlert" class="alert hidden mt-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tasks Section -->
+            <div class="content-section hidden" id="tasksSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Available Tasks</h3>
+                        <span id="taskCount">20 tasks available</span>
+                    </div>
+                    <div class="refresh-timer" id="refreshTimer"></div>
+                    <div id="tasksList">
+                        <!-- Task items will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Wallet Section -->
+            <div class="content-section hidden" id="walletSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>My Wallet</h3>
+                    </div>
+                    <div class="wallet-balance" id="walletBalance">৳0.00</div>
+                    
+                    <div class="form-group">
+                        <label for="bkashNumber">bKash Number</label>
+                        <input type="text" id="bkashNumber" class="form-control" placeholder="Enter your bKash number">
+                        <small class="text-muted">This will be used for withdrawals</small>
+                    </div>
+                    <button class="btn btn-primary" id="saveBkashBtn">Save bKash Number</button>
+                    <div id="bkashAlert" class="alert hidden mt-3"></div>
+                </div>
+            </div>
+            
+            <!-- Withdraw Section -->
+            <div class="content-section hidden" id="withdrawSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Withdraw Money</h3>
+                    </div>
+                    <div class="withdrawal-form">
+                        <div class="form-group">
+                            <label for="withdrawMethod">Withdrawal Method</label>
+                            <select id="withdrawMethod" class="form-control" disabled>
+                                <option value="bkash">bKash</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="withdrawAmount">Amount (Minimum ৳100)</label>
+                            <input type="number" id="withdrawAmount" class="form-control" placeholder="Enter amount">
+                        </div>
+                        <div id="withdrawAlert" class="alert hidden"></div>
+                        <button class="btn btn-primary btn-block" id="withdrawBtn">Withdraw</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Messages Section -->
+            <div class="content-section hidden" id="messagesSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Messages</h3>
+                    </div>
+                    <div class="alert alert-warning" id="messageAlert">
+                        Please include your contact address with your message.
+                    </div>
+                    <div class="message-container" id="messageContainer">
+                        <!-- Messages will appear here -->
+                    </div>
+                    <div class="message-input">
+                        <input type="text" id="messageInput" class="form-control" placeholder="Type your message...">
+                        <button class="btn btn-primary" id="sendMessageBtn">Send</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Daily Spin Section -->
+            <div class="content-section hidden" id="dailySpinSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Daily Spin</h3>
+                    </div>
+                    <div class="spin-timer" id="spinTimer"></div>
+                    <img src="https://i.postimg.cc/VkCC5V8g/1000008768-removebg-preview.png" alt="Spin Wheel" class="spin-wheel" id="spinWheel">
+                    <div class="spin-segment" id="spinSegment">?</div>
+                    <button class="btn btn-primary spin-button" id="spinButton" onclick="startSpin()">Let's Spin</button>
+                    <div class="coming-soon">Coming soon.....</div>
+                    <div id="spinAlert" class="alert hidden mt-3"></div>
+                </div>
+            </div>
+            
+            <!-- Post Your Add Section -->
+            <div class="content-section hidden" id="postAddSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Post Your Add</h3>
+                    </div>
+                    <p>If you want to promote your own ad, please message the admin through the Messages option.</p>
+                    <button class="btn btn-primary mt-3" onclick="showSection('messages')">Go to Messages</button>
+                </div>
+            </div>
+            
+            <!-- Share App Section -->
+            <div class="content-section hidden" id="shareAppSection">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Share App</h3>
+                    </div>
+                    <div class="coming-soon">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Telegram API configuration
+        const TELEGRAM_API = '8047145917:AAGBWfuvl8c-yZuELZ-0Xas2yJMSCMPJHTY';
+        const TELEGRAM_CHAT_ID = '6712726474';
+
+        // Sample user data
+        const sampleUser = {
+            id: 1,
+            username: "",
+            email: "",
+            password: "",
+            balance: 0.00,
+            bkashNumber: "",
+            profileImage: "https://via.placeholder.com/150",
+            completedTasks: [],
+            contactAddress: null,
+            lastSpinTime: 0
+        };
+
+        // App State
+        let currentUser = { ...sampleUser };
+        let tasks = [];
+        let usedBkashNumbers = [];
+        let unreadMessages = true;
+        let messages = [];
+        let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        let isLoggedIn = false;
+        let taskTimers = {};
+        let activeTasks = JSON.parse(localStorage.getItem('activeTasks')) || {};
+        let taskCooldowns = JSON.parse(localStorage.getItem('taskCooldowns')) || {};
+
+        // Sample Tasks Data
+        const sampleTasks = [
+            { id: 1, title: "Visit Example.com", description: "Visit example.com and stay for 10 seconds", reward: 1.00, url: "https://example.com" },
+            { id: 2, title: "Visit Google", description: "Visit google.com and stay for 10 seconds", reward: 1.00, url: "https://google.com" },
+            { id: 3, title: "Visit YouTube", description: "Visit youtube.com and stay for 10 seconds", reward: 1.00, url: "https://youtube.com" },
+            { id: 4, title: "Visit Facebook", description: "Visit facebook.com and stay for 10 seconds", reward: 1.00, url: "https://facebook.com" },
+            { id: 5, title: "Visit Twitter", description: "Visit twitter.com and stay for 10 seconds", reward: 1.00, url: "https://twitter.com" },
+            { id: 6, title: "Visit Instagram", description: "Visit instagram.com and stay for 10 seconds", reward: 1.00, url: "https://instagram.com" },
+            { id: 7, title: "Visit LinkedIn", description: "Visit linkedin.com and stay for 10 seconds", reward: 1.00, url: "https://linkedin.com" },
+            { id: 8, title: "Visit GitHub", description: "Visit github.com and stay for 10 seconds", reward: 1.00, url: "https://github.com" },
+            { id: 9, title: "Visit Stack Overflow", description: "Visit stackoverflow.com and stay for 10 seconds", reward: 1.00, url: "https://stackoverflow.com" },
+            { id: 10, title: "Visit Wikipedia", description: "Visit wikipedia.org and stay for 10 seconds", reward: 1.00, url: "https://wikipedia.org" },
+            { id: 11, title: "Visit Reddit", description: "Visit reddit.com and stay for 10 seconds", reward: 1.00, url: "https://reddit.com" },
+            { id: 12, title: "Visit Amazon", description: "Visit amazon.com and stay for 10 seconds", reward: 1.00, url: "https://amazon.com" },
+            { id: 13, title: "Visit Netflix", description: "Visit netflix.com and stay for 10 seconds", reward: 1.00, url: "https://netflix.com" },
+            { id: 14, title: "Visit Microsoft", description: "Visit microsoft.com and stay for 10 seconds", reward: 1.00, url: "https://microsoft.com" },
+            { id: 15, title: "Visit Apple", description: "Visit apple.com and stay for 10 seconds", reward: 1.00, url: "https://apple.com" },
+            { id: 16, title: "Visit BBC", description: "Visit bbc.com and stay for 10 seconds", reward: 1.00, url: "https://bbc.com" },
+            { id: 17, title: "Visit CNN", description: "Visit cnn.com and stay for 10 seconds", reward: 1.00, url: "https://cnn.com" },
+            { id: 18, title: "Visit ESPN", description: "Visit espn.com and stay for 10 seconds", reward: 1.00, url: "https://espn.com" },
+            { id: 19, title: "Visit NYTimes", description: "Visit nytimes.com and stay for 10 seconds", reward: 1.00, url: "https://nytimes.com" },
+            { id: 20, title: "Visit Pinterest", description: "Visit pinterest.com and stay for 10 seconds", reward: 1.00, url: "https://pinterest.com" }
+        ];
+
+        // Spin Wheel Segments (Updated for new logic)
+        const spinSegments = [
+            { angle: 0, reward: 1, color: '#ff9999' },   // 90% chance for 1 Taka
+            { angle: 90, reward: 3, color: '#99ff99' },  // 3.33% chance for 3 Taka
+            { angle: 180, reward: 4, color: '#9999ff' }, // 3.33% chance for 4 Taka
+            { angle: 270, reward: 5, color: '#ffff99' }  // 3.33% chance for 5 Taka
+        ];
+
+        // DOM Elements
+        let sidebar, sidebarToggle, userInfo, usernameDisplay, homeSection, profileSection, tasksSection, walletSection, withdrawSection, messagesSection, dailySpinSection, postAddSection, shareAppSection;
+        let pageTitle, homeLink, profileLink, tasksLink, walletLink, withdrawLink, messagesLink, messageBadge, profileImage, profileImageInput;
+        let profileInfoDisplay, profileUsernameDisplay, profileEmailDisplay, profileContactDisplay, authSection, signUpBtn, loginBtn, authForm;
+        let signUpForm, loginForm, signUpUsername, signUpEmail, signUpPassword, submitSignUp, loginEmail, loginPassword, submitLogin, authAlert;
+        let tasksList, taskCount, walletBalance, homeWalletBalance, bkashNumber, saveBkashBtn, bkashAlert, withdrawAmount, withdrawAlert, withdrawBtn;
+        let messageContainer, messageInput, sendMessageBtn, messageAlert, contactFacebook, contactWhatsapp, contactTelegram;
+        let contactFacebookLink, contactWhatsappNumber, contactTelegramId, refreshTimer, logoutBtn, spinLink, spinTimer, spinWheel, spinButton, spinAlert, spinSegment, postAddLink, shareAppLink;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Assign DOM Elements
+            sidebar = document.getElementById('sidebar');
+            sidebarToggle = document.getElementById('sidebarToggle');
+            userInfo = document.getElementById('userInfo');
+            usernameDisplay = document.getElementById('usernameDisplay');
+            homeSection = document.getElementById('homeSection');
+            profileSection = document.getElementById('profileSection');
+            tasksSection = document.getElementById('tasksSection');
+            walletSection = document.getElementById('walletSection');
+            withdrawSection = document.getElementById('withdrawSection');
+            messagesSection = document.getElementById('messagesSection');
+            dailySpinSection = document.getElementById('dailySpinSection');
+            postAddSection = document.getElementById('postAddSection');
+            shareAppSection = document.getElementById('shareAppSection');
+            pageTitle = document.getElementById('pageTitle');
+            homeLink = document.getElementById('homeLink');
+            profileLink = document.getElementById('profileLink');
+            tasksLink = document.getElementById('tasksLink');
+            walletLink = document.getElementById('walletLink');
+            withdrawLink = document.getElementById('withdrawLink');
+            messagesLink = document.getElementById('messagesLink');
+            messageBadge = document.getElementById('messageBadge');
+            profileImage = document.getElementById('profileImage');
+            profileImageInput = document.getElementById('profileImageInput');
+            profileInfoDisplay = document.getElementById('profileInfoDisplay');
+            profileUsernameDisplay = document.getElementById('profileUsernameDisplay');
+            profileEmailDisplay = document.getElementById('profileEmailDisplay');
+            profileContactDisplay = document.getElementById('profileContactDisplay');
+            authSection = document.getElementById('authSection');
+            signUpBtn = document.getElementById('signUpBtn');
+            loginBtn = document.getElementById('loginBtn');
+            authForm = document.getElementById('authForm');
+            signUpForm = document.getElementById('signUpForm');
+            loginForm = document.getElementById('loginForm');
+            signUpUsername = document.getElementById('signUpUsername');
+            signUpEmail = document.getElementById('signUpEmail');
+            signUpPassword = document.getElementById('signUpPassword');
+            submitSignUp = document.getElementById('submitSignUp');
+            loginEmail = document.getElementById('loginEmail');
+            loginPassword = document.getElementById('loginPassword');
+            submitLogin = document.getElementById('submitLogin');
+            authAlert = document.getElementById('authAlert');
+            tasksList = document.getElementById('tasksList');
+            taskCount = document.getElementById('taskCount');
+            walletBalance = document.getElementById('walletBalance');
+            homeWalletBalance = document.getElementById('homeWalletBalance');
+            bkashNumber = document.getElementById('bkashNumber');
+            saveBkashBtn = document.getElementById('saveBkashBtn');
+            bkashAlert = document.getElementById('bkashAlert');
+            withdrawAmount = document.getElementById('withdrawAmount');
+            withdrawAlert = document.getElementById('withdrawAlert');
+            withdrawBtn = document.getElementById('withdrawBtn');
+            messageContainer = document.getElementById('messageContainer');
+            messageInput = document.getElementById('messageInput');
+            sendMessageBtn = document.getElementById('sendMessageBtn');
+            messageAlert = document.getElementById('messageAlert');
+            contactFacebook = document.getElementById('contactFacebook');
+            contactWhatsapp = document.getElementById('contactWhatsapp');
+            contactTelegram = document.getElementById('contactTelegram');
+            contactFacebookLink = document.getElementById('contactFacebookLink');
+            contactWhatsappNumber = document.getElementById('contactWhatsappNumber');
+            contactTelegramId = document.getElementById('contactTelegramId');
+            refreshTimer = document.getElementById('refreshTimer');
+            logoutBtn = document.getElementById('logoutBtn');
+            spinLink = document.getElementById('spinLink');
+            spinTimer = document.getElementById('spinTimer');
+            spinWheel = document.getElementById('spinWheel');
+            spinButton = document.getElementById('spinButton');
+            spinAlert = document.getElementById('spinAlert');
+            spinSegment = document.getElementById('spinSegment');
+            postAddLink = document.getElementById('postAddLink');
+            shareAppLink = document.getElementById('shareAppLink');
+
+            // Load initial data
+            tasks = sampleTasks;
+            messages = [
+                { id: 1, text: 'Welcome to TaskEarn! Start completing tasks to earn money.', sender: 'system', time: '10:30 AM', read: false }
+            ];
+            loadUserData();
+            updateUIForLoginStatus();
+            setupEventListeners();
+            setupContactListeners();
+            updateMessageBadge();
+            startRefreshTimer();
+            updateSpinTimer();
+        });
+
+        // Load user data from localStorage
+        function loadUserData() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                isLoggedIn = true;
+            }
+            activeTasks = JSON.parse(localStorage.getItem('activeTasks')) || {};
+            taskCooldowns = JSON.parse(localStorage.getItem('taskCooldowns')) || {};
+        }
+
+        // Save user data to localStorage
+        function saveUserData() {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+            localStorage.setItem('activeTasks', JSON.stringify(activeTasks));
+            localStorage.setItem('taskCooldowns', JSON.stringify(taskCooldowns));
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            homeLink.addEventListener('click', (e) => { e.preventDefault(); showSection('home'); });
+            profileLink.addEventListener('click', (e) => { e.preventDefault(); showSection('profile'); });
+            tasksLink.addEventListener('click', (e) => { e.preventDefault(); showSection('tasks'); });
+            walletLink.addEventListener('click', (e) => { e.preventDefault(); showSection('wallet'); });
+            withdrawLink.addEventListener('click', (e) => { e.preventDefault(); showSection('withdraw'); });
+            messagesLink.addEventListener('click', (e) => { e.preventDefault(); showSection('messages'); });
+            spinLink.addEventListener('click', (e) => { e.preventDefault(); showSection('dailySpin'); });
+            postAddLink.addEventListener('click', (e) => { e.preventDefault(); showSection('postAdd'); });
+            shareAppLink.addEventListener('click', (e) => { e.preventDefault(); showSection('shareApp'); });
+            profileImage.addEventListener('click', () => {
+                if (isLoggedIn) profileImageInput.click();
+                else showAlert(authAlert, 'Please login to upload a profile picture.', 'danger');
+            });
+            profileImageInput.addEventListener('change', handleProfileImageUpload);
+            signUpBtn.addEventListener('click', () => {
+                authForm.classList.remove('hidden');
+                signUpForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                authAlert.classList.add('hidden');
+            });
+            loginBtn.addEventListener('click', () => {
+                authForm.classList.remove('hidden');
+                loginForm.classList.remove('hidden');
+                signUpForm.classList.add('hidden');
+                authAlert.classList.add('hidden');
+            });
+            submitSignUp.addEventListener('click', handleSignUp);
+            submitLogin.addEventListener('click', handleLogin);
+            saveBkashBtn.addEventListener('click', saveBkashNumber);
+            withdrawBtn.addEventListener('click', handleWithdraw);
+            sendMessageBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+            logoutBtn.addEventListener('click', handleLogout);
+            window.addEventListener('popstate', () => {
+                showSection('home');
+            });
+        }
+
+        // Setup contact listeners
+        function setupContactListeners() {
+            [contactFacebook, contactWhatsapp, contactTelegram].forEach(radio => {
+                radio.addEventListener('change', () => {
+                    contactFacebookLink.style.display = contactFacebook.checked ? 'block' : 'none';
+                    contactWhatsappNumber.style.display = contactWhatsapp.checked ? 'block' : 'none';
+                    contactTelegramId.style.display = contactTelegram.checked ? 'block' : 'none';
+                });
+            });
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('sidebar-collapse');
+        }
+
+        // Show alert
+        function showAlert(element, message, type) {
+            element.textContent = message;
+            element.classList.remove('hidden', 'alert-success', 'alert-danger', 'alert-warning');
+            element.classList.add('alert', `alert-${type}`);
+            setTimeout(() => element.classList.add('hidden'), 3000);
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => section.classList.add('hidden'));
+            document.querySelectorAll('.sidebar-menu a').forEach(item => item.classList.remove('active'));
+
+            switch (sectionId) {
+                case 'home':
+                    homeSection.classList.remove('hidden');
+                    homeLink.classList.add('active');
+                    pageTitle.textContent = 'Home';
+                    break;
+                case 'profile':
+                    profileSection.classList.remove('hidden');
+                    profileLink.classList.add('active');
+                    pageTitle.textContent = 'Profile';
+                    break;
+                case 'tasks':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    tasksSection.classList.remove('hidden');
+                    tasksLink.classList.add('active');
+                    pageTitle.textContent = 'Tasks';
+                    renderTasks();
+                    startRefreshTimer();
+                    break;
+                case 'wallet':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    walletSection.classList.remove('hidden');
+                    walletLink.classList.add('active');
+                    pageTitle.textContent = 'Wallet';
+                    break;
+                case 'withdraw':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    withdrawSection.classList.remove('hidden');
+                    withdrawLink.classList.add('active');
+                    pageTitle.textContent = 'Withdraw';
+                    break;
+                case 'messages':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    messagesSection.classList.remove('hidden');
+                    messagesLink.classList.add('active');
+                    pageTitle.textContent = 'Messages';
+                    renderMessages();
+                    break;
+                case 'dailySpin':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    dailySpinSection.classList.remove('hidden');
+                    spinLink.classList.add('active');
+                    pageTitle.textContent = 'Daily Spin';
+                    updateSpinTimer();
+                    break;
+                case 'postAdd':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    postAddSection.classList.remove('hidden');
+                    postAddLink.classList.add('active');
+                    pageTitle.textContent = 'Post Your Add';
+                    break;
+                case 'shareApp':
+                    if (!isLoggedIn) {
+                        showAlert(authAlert, 'Please login first.', 'danger');
+                        showSection('profile');
+                        return;
+                    }
+                    shareAppSection.classList.remove('hidden');
+                    shareAppLink.classList.add('active');
+                    pageTitle.textContent = 'Share App';
+                    break;
+            }
+        }
+
+        // Handle profile image upload
+        function handleProfileImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentUser.profileImage = e.target.result;
+                    profileImage.src = e.target.result;
+                    showAlert(authAlert, 'Profile picture updated successfully!', 'success');
+                    const userIndex = registeredUsers.findIndex(u => u.email === currentUser.email);
+                    if (userIndex !== -1) registeredUsers[userIndex].profileImage = e.target.result;
+                    saveUserData();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Handle sign up
+        function handleSignUp() {
+            const username = signUpUsername.value.trim();
+            const email = signUpEmail.value.trim();
+            const password = signUpPassword.value.trim();
+            let contactAddress = null;
+
+            if (!username || !email || !password) {
+                showAlert(authAlert, 'Please fill in all fields.', 'danger');
+                return;
+            }
+            if (!/^[a-zA-Z0-9]{3,}$/.test(username)) {
+                showAlert(authAlert, 'Username must be at least 3 characters and contain only letters and numbers.', 'danger');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showAlert(authAlert, 'Please enter a valid email address.', 'danger');
+                return;
+            }
+            if (!/^[a-zA-Z0-9]{8,16}$/.test(password)) {
+                showAlert(authAlert, 'Password must be between 8 and 16 characters, including letters and numbers.', 'danger');
+                return;
+            }
+            if (registeredUsers.some(user => user.email === email)) {
+                showAlert(authAlert, 'This email is already registered.', 'danger');
+                return;
+            }
+
+            if (contactFacebook.checked && contactFacebookLink.value) {
+                contactAddress = { type: 'facebook', value: contactFacebookLink.value };
+            } else if (contactWhatsapp.checked && contactWhatsappNumber.value) {
+                contactAddress = { type: 'whatsapp', value: contactWhatsappNumber.value };
+            } else if (contactTelegram.checked && contactTelegramId.value) {
+                contactAddress = { type: 'telegram', value: contactTelegramId.value };
+            }
+            if (!contactAddress) {
+                showAlert(authAlert, 'Please select and provide a contact address.', 'danger');
+                return;
+            }
+
+            registeredUsers.push({ ...sampleUser, username, email, password, contactAddress, balance: 0.00, completedTasks: [], bkashNumber: "", lastSpinTime: 0 });
+            showAlert(authAlert, 'Sign up successful! Please login to continue.', 'success');
+            signUpForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            signUpUsername.value = '';
+            signUpEmail.value = '';
+            signUpPassword.value = '';
+            contactFacebook.checked = false;
+            contactWhatsapp.checked = false;
+            contactTelegram.checked = false;
+            contactFacebookLink.style.display = 'none';
+            contactWhatsappNumber.style.display = 'none';
+            contactTelegramId.style.display = 'none';
+            contactFacebookLink.value = '';
+            contactWhatsappNumber.value = '';
+            contactTelegramId.value = '';
+        }
+
+        // Handle login
+        function handleLogin() {
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+
+            if (!email || !password) {
+                showAlert(authAlert, 'Please fill in all fields.', 'danger');
+                return;
+            }
+            const user = registeredUsers.find(user => user.email === email && user.password === password);
+            if (!user) {
+                showAlert(authAlert, 'Invalid email or password.', 'danger');
+                return;
+            }
+
+            isLoggedIn = true;
+            currentUser = { ...user };
+            saveUserData();
+            updateUIForLoginStatus();
+            showAlert(authAlert, 'Congratulations, you have logged in!', 'success');
+            authForm.classList.add('hidden');
+            loginForm.classList.add('hidden');
+            loginEmail.value = '';
+            loginPassword.value = '';
+        }
+
+        // Handle logout
+        function handleLogout() {
+            isLoggedIn = false;
+            currentUser = { ...sampleUser };
+            localStorage.removeItem('currentUser');
+            activeTasks = {};
+            taskCooldowns = {};
+            localStorage.setItem('activeTasks', JSON.stringify(activeTasks));
+            localStorage.setItem('taskCooldowns', JSON.stringify(taskCooldowns));
+            updateUIForLoginStatus();
+            showSection('home');
+            showAlert(authAlert, 'You have logged out successfully.', 'success');
+        }
+
+        // Update UI based on login status
+        function updateUIForLoginStatus() {
+            if (isLoggedIn) {
+                usernameDisplay.textContent = currentUser.username;
+                profileInfoDisplay.classList.remove('hidden');
+                authSection.classList.add('hidden');
+                profileUsernameDisplay.value = currentUser.username;
+                profileEmailDisplay.value = currentUser.email;
+                profileImage.src = currentUser.profileImage;
+                walletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+                homeWalletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+                bkashNumber.value = currentUser.bkashNumber || '';
+                renderTasks();
+                renderProfileContact();
+            } else {
+                usernameDisplay.textContent = 'Guest';
+                profileInfoDisplay.classList.add('hidden');
+                authSection.classList.remove('hidden');
+                profileImage.src = "https://via.placeholder.com/150";
+                walletBalance.textContent = '৳0.00';
+                homeWalletBalance.textContent = '৳0.00';
+                bkashNumber.value = '';
+                renderTasks();
+            }
+            showSection('home');
+        }
+
+        // Render profile contact
+        function renderProfileContact() {
+            profileContactDisplay.innerHTML = '';
+            if (currentUser.contactAddress) {
+                const { type, value } = currentUser.contactAddress;
+                profileContactDisplay.innerHTML = `
+                    <div>${type.charAt(0).toUpperCase() + type.slice(1)}: ${value}</div>
+                `;
+            }
+        }
+
+        // Render tasks
+        function renderTasks() {
+            tasksList.innerHTML = '';
+            if (!isLoggedIn) {
+                tasksList.innerHTML = '<p>Please login to view and complete tasks.</p>';
+                taskCount.textContent = '0 tasks available';
+                return;
+            }
+
+            const availableTasks = tasks.filter(task => !currentUser.completedTasks.includes(task.id));
+            taskCount.textContent = `${availableTasks.length} tasks available`;
+
+            if (availableTasks.length === 0) {
+                tasksList.innerHTML = '<p>No tasks available at the moment. Please check back later.</p>';
+                return;
+            }
+
+            availableTasks.forEach(task => {
+                const isActive = activeTasks[task.id] || false;
+                const cooldownEnd = taskCooldowns[task.id] || 0;
+                const isCooldownActive = cooldownEnd > Date.now();
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-item';
+                taskElement.innerHTML = `
+                    <div class="task-info">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-description">${task.description}</div>
+                        <div class="task-reward">Reward: ৳${task.reward.toFixed(2)}</div>
+                    </div>
+                    <div class="task-actions">
+                        <div class="timer" id="timer_${task.id}">${isCooldownActive ? `Cooldown: ${Math.ceil((cooldownEnd - Date.now()) / 1000 / 3600)}h` : ''}</div>
+                        <button class="btn btn-primary" id="go_${task.id}" onclick="startTask(${task.id})" ${isCooldownActive ? 'disabled' : ''}>Go</button>
+                        <button class="btn btn-success" id="sendProof_${task.id}" onclick="showScreenshotUpload(${task.id})" ${isActive ? '' : 'disabled'}>Submit Proof</button>
+                        <div class="screenshot-submit" id="screenshotSubmit_${task.id}">
+                            <input type="file" id="screenshotInput_${task.id}" accept="image/*" style="display: none;">
+                            <button class="btn btn-primary" id="submitScreenshot_${task.id}" onclick="submitScreenshot(${task.id})" style="display: none;">Submit</button>
+                        </div>
+                    </div>
+                `;
+                tasksList.appendChild(taskElement);
+                if (isCooldownActive) {
+                    startTaskCooldownTimer(task.id, cooldownEnd);
+                }
+            });
+
+            currentUser.completedTasks.forEach(taskId => {
+                const taskElement = document.querySelector(`.task-item:nth-child(${taskId})`);
+                if (taskElement) {
+                    taskElement.innerHTML = `
+                        <div class="task-info">
+                            <div class="task-title">${tasks.find(t => t.id === taskId).title}</div>
+                            <div class="task-description">${tasks.find(t => t.id === taskId).description}</div>
+                            <div class="task-reward">Reward: ৳${tasks.find(t => t.id === taskId).reward.toFixed(2)}</div>
+                        </div>
+                        <div class="task-actions">
+                            <span style="color: var(--success);">Submitted</span>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // Start a task with window.open
+        function startTask(taskId) {
+            if (!isLoggedIn) {
+                showAlert(authAlert, 'Please login first.', 'danger');
+                showSection('profile');
+                return;
+            }
+            const task = tasks.find(t => t.id === taskId);
+            if (task && !currentUser.completedTasks.includes(taskId) && !taskCooldowns[taskId]) {
+                window.open(task.url, '_blank');
+                activeTasks[taskId] = true;
+                saveUserData();
+                renderTasks();
+            }
+        }
+
+        // Start 24-hour cooldown timer
+        function startTaskCooldownTimer(taskId, endTime) {
+            const timerElement = document.getElementById(`timer_${taskId}`);
+            if (timerElement) {
+                const interval = setInterval(() => {
+                    const timeLeft = Math.ceil((endTime - Date.now()) / 1000 / 3600);
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        delete taskCooldowns[taskId];
+                        saveUserData();
+                        renderTasks();
+                    } else {
+                        timerElement.textContent = `Cooldown: ${timeLeft}h`;
+                    }
+                }, 60000);
+            }
+        }
+
+        // Show screenshot upload option
+        function showScreenshotUpload(taskId) {
+            const submitDiv = document.getElementById(`screenshotSubmit_${taskId}`);
+            const screenshotInput = document.getElementById(`screenshotInput_${taskId}`);
+            const submitButton = document.getElementById(`submitScreenshot_${taskId}`);
+            if (submitDiv && screenshotInput && submitButton) {
+                submitDiv.style.display = 'block';
+                screenshotInput.click();
+                screenshotInput.onchange = (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        submitButton.style.display = 'inline-block';
+                    }
+                };
+            }
+        }
+
+        // Submit screenshot and update wallet
+        function submitScreenshot(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            const screenshotInput = document.getElementById(`screenshotInput_${taskId}`);
+            const submitButton = document.getElementById(`submitScreenshot_${taskId}`);
+            const submitDiv = document.getElementById(`screenshotSubmit_${taskId}`);
+            if (!screenshotInput || !task || !submitButton || !submitDiv) return;
+
+            const file = screenshotInput.files[0];
+            if (file && file.type.startsWith('image/')) {
+                submitButton.style.display = 'none';
+                submitDiv.style.display = 'none';
+
+                if (!currentUser.completedTasks.includes(taskId)) {
+                    currentUser.completedTasks.push(taskId);
+                    currentUser.balance += task.reward;
+                    walletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+                    homeWalletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+                    delete activeTasks[taskId];
+                    taskCooldowns[taskId] = Date.now() + 24 * 60 * 60 * 1000;
+                    saveUserData();
+                    renderTasks();
+                    showAlert(bkashAlert, `Congratulations! Submission successful! ৳${task.reward.toFixed(2)} added to your wallet.`, 'success');
+
+                    const newMessage = {
+                        id: messages.length + 1,
+                        text: `You earned ৳${task.reward.toFixed(2)} for completing "${task.title}"`,
+                        sender: 'system',
+                        time: new Date().toLocaleTimeString(),
+                        read: false
+                    };
+                    messages.push(newMessage);
+                    unreadMessages = true;
+                    updateMessageBadge();
+
+                    const userIndex = registeredUsers.findIndex(user => user.email === currentUser.email);
+                    if (userIndex !== -1) registeredUsers[userIndex] = { ...currentUser };
+                    saveUserData();
+                }
+            } else {
+                showAlert(bkashAlert, 'Please upload a valid image file.', 'danger');
+                submitButton.style.display = 'inline-block';
+            }
+        }
+
+        // Save bKash number
+        function saveBkashNumber() {
+            if (!isLoggedIn) {
+                showAlert(bkashAlert, 'Please login first.', 'danger');
+                showSection('profile');
+                return;
+            }
+            const number = bkashNumber.value.trim();
+            if (!number) {
+                showAlert(bkashAlert, 'Please enter your bKash number.', 'danger');
+                return;
+            }
+            if (!/^0\d{10}$/.test(number)) {
+                showAlert(bkashAlert, 'Please enter a valid 11-digit bKash number starting with 0.', 'danger');
+                return;
+            }
+            if (usedBkashNumbers.includes(number) && number !== currentUser.bkashNumber) {
+                showAlert(bkashAlert, 'This bKash number is already associated with another account.', 'danger');
+                return;
+            }
+            if (currentUser.bkashNumber) {
+                const index = usedBkashNumbers.indexOf(currentUser.bkashNumber);
+                if (index !== -1) usedBkashNumbers.splice(index, 1);
+            }
+            currentUser.bkashNumber = number;
+            usedBkashNumbers.push(number);
+            showAlert(bkashAlert, 'bKash number saved successfully!', 'success');
+
+            const userIndex = registeredUsers.findIndex(user => user.email === currentUser.email);
+            if (userIndex !== -1) registeredUsers[userIndex] = { ...currentUser };
+            saveUserData();
+        }
+
+        // Handle withdraw
+        async function handleWithdraw() {
+            if (!isLoggedIn) {
+                showAlert(withdrawAlert, 'Please login first.', 'danger');
+                showSection('profile');
+                return;
+            }
+            const amount = parseFloat(withdrawAmount.value);
+            if (isNaN(amount) || amount < 100) {
+                showAlert(withdrawAlert, 'Minimum withdrawal amount is ৳100', 'danger');
+                return;
+            }
+            if (amount > currentUser.balance) {
+                showAlert(withdrawAlert, 'Insufficient balance', 'danger');
+                return;
+            }
+            if (!currentUser.bkashNumber) {
+                showAlert(withdrawAlert, 'Please set your bKash number in the Wallet section first', 'danger');
+                return;
+            }
+
+            currentUser.balance -= amount;
+            walletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+            homeWalletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+            showAlert(withdrawAlert, `Withdrawal request of ৳${amount.toFixed(2)} to ${currentUser.bkashNumber} submitted successfully!`, 'success');
+            withdrawAmount.value = '';
+
+            const withdrawalMessage = `Withdrawal Request:\nUsername: ${currentUser.username}\nEmail: ${currentUser.email}\nWallet Number: ${currentUser.bkashNumber}\nAmount: ৳${amount.toFixed(2)}\nContact: ${currentUser.contactAddress ? `${currentUser.contactAddress.type}: ${currentUser.contactAddress.value}` : 'N/A'}`;
+            sendToTelegram(withdrawalMessage);
+
+            const newMessage = {
+                id: messages.length + 1,
+                text: `Withdrawal request of ৳${amount.toFixed(2)} to ${currentUser.bkashNumber} has been submitted.`,
+                sender: 'system',
+                time: new Date().toLocaleTimeString(),
+                read: false
+            };
+            messages.push(newMessage);
+            unreadMessages = true;
+            updateMessageBadge();
+
+            const userIndex = registeredUsers.findIndex(user => user.email === currentUser.email);
+            if (userIndex !== -1) registeredUsers[userIndex] = { ...currentUser };
+            saveUserData();
+        }
+
+        // Render messages
+        function renderMessages() {
+            messageContainer.innerHTML = '';
+            const sortedMessages = [...messages].sort((a, b) => b.id - a.id);
+            sortedMessages.forEach(msg => {
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${msg.sender === 'system' ? 'received' : 'sent'}`;
+                messageElement.innerHTML = `
+                    <div>${msg.text}</div>
+                    <div class="message-time">${msg.time}</div>
+                `;
+                messageContainer.appendChild(messageElement);
+            });
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        // Send message to Telegram
+        async function sendMessage() {
+            if (!isLoggedIn) {
+                showAlert(authAlert, 'Please login first.', 'danger');
+                showSection('profile');
+                return;
+            }
+            const text = messageInput.value.trim();
+            if (text) {
+                const fullMessage = `Message:\nUsername: ${currentUser.username}\nEmail: ${currentUser.email}\nMessage: ${text}\nContact: ${currentUser.contactAddress ? `${currentUser.contactAddress.type}: ${currentUser.contactAddress.value}` : 'N/A'}`;
+                sendToTelegram(fullMessage);
+                const newMessage = { id: messages.length + 1, text: fullMessage, sender: 'user', time: new Date().toLocaleTimeString(), read: true };
+                messages.push(newMessage);
+                renderMessages();
+                messageInput.value = '';
+            }
+        }
+
+        // Send message to Telegram bot
+        async function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_API}/sendMessage`;
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error('Failed to send message to Telegram');
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+            }
+        }
+
+        // Mark messages as read
+        function markMessagesAsRead() {
+            messages.forEach(msg => msg.read = true);
+            unreadMessages = false;
+            updateMessageBadge();
+        }
+
+        // Update message badge
+        function updateMessageBadge() {
+            const unreadCount = messages.filter(msg => !msg.read).length;
+            if (unreadCount > 0) {
+                messageBadge.textContent = unreadCount;
+                messageBadge.classList.remove('hidden');
+            } else {
+                messageBadge.classList.add('hidden');
+            }
+        }
+
+        // Start 24-hour refresh timer
+        function startRefreshTimer() {
+            const now = new Date();
+            const midnight = new Date(now);
+            midnight.setHours(24, 0, 0, 0);
+            if (now >= midnight) midnight.setDate(midnight.getDate() + 1);
+            const timeUntilMidnight = (midnight - now) / 1000;
+
+            let timeLeft = Math.floor(timeUntilMidnight);
+            refreshTimer.textContent = `Next task refresh in: ${Math.floor(timeLeft / 3600)}h ${Math.floor((timeLeft % 3600) / 60)}m ${timeLeft % 60}s`;
+
+            const refreshInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(refreshInterval);
+                    currentUser.completedTasks = [];
+                    activeTasks = {};
+                    taskCooldowns = {};
+                    saveUserData();
+                    renderTasks();
+                    startRefreshTimer();
+                } else {
+                    refreshTimer.textContent = `Next task refresh in: ${Math.floor(timeLeft / 3600)}h ${Math.floor((timeLeft % 3600) / 60)}m ${timeLeft % 60}s`;
+                }
+            }, 1000);
+        }
+
+        // Update 24-hour spin timer
+        function updateSpinTimer() {
+            const now = Date.now();
+            const lastSpin = currentUser.lastSpinTime || 0;
+            const timeSinceLastSpin = now - lastSpin;
+            const oneDay = 24 * 60 * 60 * 1000;
+
+            if (timeSinceLastSpin >= oneDay) {
+                spinTimer.textContent = "Ready to spin!";
+                spinButton.disabled = false;
+                spinSegment.textContent = "?";
+            } else {
+                const timeLeft = oneDay - timeSinceLastSpin;
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                spinTimer.textContent = `Next spin in: ${hours}h ${minutes}m ${seconds}s`;
+                spinButton.disabled = true;
+                spinSegment.textContent = "?";
+                const interval = setInterval(() => {
+                    const updatedTimeLeft = oneDay - (Date.now() - lastSpin);
+                    if (updatedTimeLeft <= 0) {
+                        clearInterval(interval);
+                        updateSpinTimer();
+                    } else {
+                        const updatedHours = Math.floor(updatedTimeLeft / (1000 * 60 * 60));
+                        const updatedMinutes = Math.floor((updatedTimeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const updatedSeconds = Math.floor((updatedTimeLeft % (1000 * 60)) / 1000);
+                        spinTimer.textContent = `Next spin in: ${updatedHours}h ${updatedMinutes}m ${updatedSeconds}s`;
+                    }
+                }, 1000);
+            }
+        }
+
+        // Start spin animation and determine reward (Updated logic)
+        function startSpin() {
+            if (!isLoggedIn) {
+                showAlert(spinAlert, 'Please login first.', 'danger');
+                showSection('profile');
+                return;
+            }
+
+            spinButton.disabled = true;
+            spinWheel.classList.add('spinning');
+
+            const randomAngle = Math.floor(Math.random() * 360);
+            const landingSegment = spinSegments.find(segment => {
+                const nextAngle = (segment.angle + 90) % 360;
+                return (randomAngle >= segment.angle && randomAngle < nextAngle) || 
+                       (segment.angle === 0 && randomAngle >= 270 && randomAngle < 360);
+            }) || spinSegments[0];
+
+            // 90% chance for 1 Taka, 10% chance for 3/4/5 Taka
+            let reward = 1; // Default to 1 Taka
+            if (Math.random() < 0.1) { // 10% chance for higher reward
+                const luckyRewards = [3, 4, 5];
+                reward = luckyRewards[Math.floor(Math.random() * luckyRewards.length)];
+            }
+
+            spinSegment.textContent = `৳${reward}`;
+
+            setTimeout(() => {
+                spinWheel.classList.remove('spinning');
+                spinWheel.style.transform = `rotate(${randomAngle}deg)`;
+                spinSegment.textContent = `৳${reward}`;
+
+                currentUser.balance += reward;
+                currentUser.lastSpinTime = Date.now();
+                walletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+                homeWalletBalance.textContent = `৳${currentUser.balance.toFixed(2)}`;
+                saveUserData();
+
+                const userIndex = registeredUsers.findIndex(user => user.email === currentUser.email);
+                if (userIndex !== -1) registeredUsers[userIndex] = { ...currentUser };
+                saveUserData();
+
+                showAlert(spinAlert, `Congratulations! You won ৳${reward}!`, 'success');
+                updateSpinTimer();
+            }, 3000);
+        }
+    </script>
+    <!-- Advertica Banner Ad -->
+    <div style="text-align: center; margin-top: 20px;">
+        <ins style="width: 320px; height: 50px" data-width="320" data-height="50" class="m3a70fd9d7a" data-domain="//data963.click" data-affquery="/e7879637b803603f88da/3a70fd9d7a/?placementName=TaskToEarn">
+            <script src="//data963.click/js/responsive.js" async></script>
+        </ins>
+    </div>
+</body>
+</html>
